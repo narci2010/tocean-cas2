@@ -1,0 +1,51 @@
+logging:
+  #日志存储地址
+  file: "logs/sso-server.log"
+  level: info
+info:
+  name : "自定义SSO-Server，管理登录用户"
+
+
+server:
+  port: 9000
+  context-path: /sso
+  address: sso.server.com
+
+spring:
+    #MVC配置
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+
+      # Redis配置
+  redis:
+        ## Redis数据库索引（默认为0）
+    database: 0
+    host: 192.168.1.222
+    port: 6379
+    password:
+    pool:
+        # 最大连接数
+      max-active: 8
+        # 最大空闲链接
+      max-idle: 8
+        # 最大阻塞等待时间（负值无限制）
+      max-wait: -1
+        # 最小空闲链接
+      min-idle: 0
+
+      # 热部署
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
+cros: 
+  allow:  
+    headers:  Strict-Transport-Security,X-Content-Type-Options,X-Frame-Options,X-XSS-Protection,Accept,Accept-Charset,Accept-Encoding,Accept-Language,Accept-Ranges,Authorization,Cache-Control,Connection,Cookie,Content-Length,Content-Type,Date,Expect,From,Host,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Max-Forwards,Pragma,Proxy-Authorization,Range,Referer,TE,Upgrade,User-Agent,Via,Warning,Accept-Ranges,Age,Allow,Content-Encoding,Content-Language,Content-Location,Content-MD5,Content-Range,ETag,Expires,Last-Modified,Location,Proxy-Authenticate,refresh,Retry-After,Server,Set-Cookie,Trailer,Transfer-Encoding,Vary,WWW-Authenticate
+    methods:  GET,POST,HEAD,OPTIONS,PUT,DELETE,TRACE,CONNECT
+    domains:  http://localhost,http://localhost:8083,http://client1.com
+  expose: 
+    headers:  Strict-Transport-Security,X-Content-Type-Options,X-Frame-Options,X-XSS-Protection,Accept,Accept-Charset,Accept-Encoding,Accept-Language,Accept-Ranges,Authorization,Cache-Control,Connection,Cookie,Content-Length,Content-Type,Date,Expect,From,Host,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Max-Forwards,Pragma,Proxy-Authorization,Range,Referer,TE,Upgrade,User-Agent,Via,Warning,Accept-Ranges,Age,Allow,Content-Encoding,Content-Language,Content-Location,Content-MD5,Content-Range,ETag,Expires,Last-Modified,Location,Proxy-Authenticate,refresh,Retry-After,Server,Set-Cookie,Trailer,Transfer-Encoding,Vary,WWW-Authenticate
+  
