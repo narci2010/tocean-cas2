@@ -5,6 +5,11 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+fs = require('fs')
+const path = require('path')
+
+const HOST = process.env.HOST
+const PORT = process.env.PORT && Number(process.env.PORT)
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -17,6 +22,34 @@ module.exports = merge(baseWebpackConfig, {
   },
   // cheap-module-eval-source-map is faster for development
   devtool: '#cheap-module-eval-source-map',
+   // these devServer options should be customized in /config/index.js
+   devServer: {
+    clientLogLevel: 'warning',
+    https: {
+      key: fs.readFileSync("./ssl/course.key"),
+      cert: fs.readFileSync("./ssl/course.crt"),
+    },
+    historyApiFallback: {
+      rewrites: [
+        { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
+      ],
+    },
+    hot: true,
+    contentBase: false, // since we use CopyWebpackPlugin.
+    compress: true,
+    host: HOST || config.dev.host,
+    port: PORT || config.dev.port,
+    open: config.dev.autoOpenBrowser,
+    overlay: config.dev.errorOverlay
+      ? { warnings: false, errors: true }
+      : false,
+    publicPath: config.dev.assetsPublicPath,
+    proxy: config.dev.proxyTable,
+    quiet: true, // necessary for FriendlyErrorsPlugin
+    watchOptions: {
+      poll: config.dev.poll,
+    }
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': config.dev.env

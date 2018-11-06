@@ -5,9 +5,9 @@
       <button @click="increment">+</button>
       <button @click="decrement">-</button>
     </p>
-    <button @click="login">login</button>
+    <button @click="login2">login</button>
     <br> <br> <br>
-     <button @click="checkme">check</button>
+     <button @click="checkme2">check</button>
   </div>
 </template>
 
@@ -56,7 +56,9 @@ export default {
       },
       cors: '',
       loginUrl: 'http://sso.server.com:9000/sso/user/login',
-      loginForm: { 'grant_type': 'password', 'username': 'tingfeng', 'password': 'tingfeng', 'client_id': 'dfqy-group-inc', 'service': 'http://localhost/#/hello' }
+      loginUrl2: 'https://localhost:8443/cas/v2/ticket',
+      loginForm: { 'grant_type': 'password', 'username': 'tingfeng', 'password': 'tingfeng', 'client_id': 'dfqy-group-inc', 'service': 'http://localhost/#/hello' },
+      loginForm2: { 'username': 'admin', 'password': '123', 'service': 'http://localhost:8083' }
 
     }
   },
@@ -98,6 +100,22 @@ export default {
         console.log(error)
       })
     },
+     checkme2 () {
+      this.$axios({
+        method: 'get',
+        url: 'https://localhost:8443/cas/v2/ticket?service=http://localhost:8083',
+        headers: {
+          'Accept': 'application/json'}
+        // dataType: 'json',
+        // withCredentials: true,
+        // crossDomain: true
+              }).then(response => {
+        // this.$router.push({ path: '/hello' })
+        console.log(response.data)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     login: function () {
       this.$axios({
         url: this.loginUrl,
@@ -114,6 +132,30 @@ export default {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': 'Basic ZGZxeS1ncm91cC1pbmM6UmZXSTFtR21oV0dpckJiZGtJaVV2VTlpZExzdGlWSk9Jc250R1labDJ6Z1JhOCs3Q0YyOVB2aDFBb0dCQU5PeA==='
+        }
+      })
+        .then(function (response) {
+          console.log(response)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+     login2: function () {
+      this.$axios({
+        url: this.loginUrl2,
+        method: 'post',
+        data: this.loginForm2,
+        transformRequest: [function (data) {
+          // Do whatever you want to transform the data
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
       })
         .then(function (response) {
